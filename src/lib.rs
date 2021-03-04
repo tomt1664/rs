@@ -59,10 +59,7 @@ pub mod types;
 /// Utility functions for ecies
 pub mod utils;
 
-#[cfg(feature = "openssl")]
-mod openssl_aes;
-#[cfg(feature = "pure")]
-mod pure_aes;
+mod aes;
 
 use utils::{aes_decrypt, aes_encrypt, decapsulate, encapsulate, generate_keypair};
 

@@ -1,4 +1,4 @@
-use hkdf::Hkdf;
+use hkdf::hkdf::Hkdf;
 use rand::thread_rng;
 use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
 use sha2::Sha256;
@@ -6,11 +6,7 @@ use sha2::Sha256;
 use crate::consts::EMPTY_BYTES;
 use crate::types::AesKey;
 
-#[cfg(feature = "pure")]
-pub use crate::pure_aes::{aes_decrypt, aes_encrypt};
-
-#[cfg(feature = "openssl")]
-pub use crate::openssl_aes::{aes_decrypt, aes_encrypt};
+pub use crate::aes::{aes_decrypt, aes_encrypt};
 
 /// Generate a `(SecretKey, PublicKey)` pair
 pub fn generate_keypair() -> (SecretKey, PublicKey) {
