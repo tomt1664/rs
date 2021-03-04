@@ -1,7 +1,8 @@
 use rand::{thread_rng, Rng};
 
-use rust_crypto::aes::KeySize;
-use rust_crypto::aes_gcm::AesGcm;
+use crypto::aes::KeySize;
+use crypto::aes_gcm::AesGcm;
+use sgx_tstd::iter::repeat;
 
 use crate::consts::{AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH, AES_TAG_LENGTH, EMPTY_BYTES};
 
@@ -15,7 +16,7 @@ pub fn aes_encrypt(key: &[u8], msg: &[u8]) -> Option<Vec<u8>> {
     let mut output = Vec::with_capacity(AES_IV_PLUS_TAG_LENGTH + msg.len());
     let mut tag = [0u8; AES_TAG_LENGTH];
 
-    let mut out: Vec<u8> = repeat(0).take(item.plain_text.len()).collect();
+    let mut out: Vec<u8> = repeat(0).take(msg.len()).collect();
 
     cipher.encrypt(&msg[..], &mut out[..], &mut tag[..]);
 
@@ -28,7 +29,7 @@ pub fn aes_encrypt(key: &[u8], msg: &[u8]) -> Option<Vec<u8>> {
     output.extend(&tag);
     output.extend(out);
 
-    if Ok(output) {
+    if output.len() > 0 {
         Some(output)
     } else {
         None
