@@ -1,7 +1,11 @@
+#![no_std]
+use sgx_tstd as std;
+
 use crypto::hkdf::*;
 use rand::thread_rng;
 use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
 use crypto::sha2::Sha256;
+use sgx_tstd::vec::Vec;
 
 use crate::consts::EMPTY_BYTES;
 use crate::types::AesKey;
@@ -43,7 +47,7 @@ fn hkdf_sha256(master: &[u8]) -> Result<AesKey, SecpError> {
     let digest = Sha256::new();
     let mut out = [0u8; 32];
     let mut prk = [0u8; 32];
-    hkdf_extract(digest, &vec![], &master, &mut prk);
+    hkdf_extract(digest, &EMPTY_BYTES, &master, &mut prk);
     hkdf_expand(digest, &prk[..], &EMPTY_BYTES, &mut out);
     Ok(out)
 }

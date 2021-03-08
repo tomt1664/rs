@@ -1,8 +1,15 @@
+#![no_std]
+use sgx_tstd as std;
+
 use rand::{thread_rng, Rng};
 
 use crypto::aes::KeySize;
 use crypto::aes_gcm::AesGcm;
+use crypto::aead::AeadEncryptor;
+use crypto::aead::AeadDecryptor;
+
 use sgx_tstd::iter::repeat;
+use sgx_tstd::vec::Vec;
 
 use crate::consts::{AES_IV_LENGTH, AES_IV_PLUS_TAG_LENGTH, AES_TAG_LENGTH, EMPTY_BYTES};
 

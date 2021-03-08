@@ -51,7 +51,9 @@
 //! It's also possible to build to the `wasm32-unknown-unknown` target with the pure Rust backend. Check out [this repo](https://github.com/ecies/rs-wasm) for more details.
 #![no_std]
 
-extern crate sgx_tstd as std;
+use sgx_tstd as std;
+
+use sgx_tstd::vec::Vec;
 
 pub use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
 
