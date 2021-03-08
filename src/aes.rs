@@ -20,8 +20,6 @@ pub fn aes_encrypt(key: &[u8], msg: &[u8]) -> Option<Vec<u8>> {
 
     cipher.encrypt(&msg[..], &mut out[..], &mut tag[..]);
 
-    let cipher = Cipher::aes_256_gcm();
-
     let mut iv = [0u8; AES_IV_LENGTH];
     thread_rng().fill(&mut iv);
 
@@ -48,7 +46,7 @@ pub fn aes_decrypt(key: &[u8], encrypted_msg: &[u8]) -> Option<Vec<u8>> {
 
 
     let mut decipher = AesGcm::new(KeySize::KeySize256, &key[..], &iv[..], &EMPTY_BYTES);
-    let mut out: Vec<u8> = repeat(0).take(item.plain_text.len()).collect();
+    let mut out: Vec<u8> = repeat(0).take(encrypted_msg.len()).collect();
     let result = decipher.decrypt(&encrypted_msg[..], &mut out[..], &tag[..]);
 
     if result {

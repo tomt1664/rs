@@ -49,6 +49,7 @@
 //! # WASM compatibility
 //!
 //! It's also possible to build to the `wasm32-unknown-unknown` target with the pure Rust backend. Check out [this repo](https://github.com/ecies/rs-wasm) for more details.
+#![no_std]
 
 extern crate sgx_tstd as std;
 
