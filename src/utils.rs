@@ -1,11 +1,8 @@
-#![no_std]
-use sgx_tstd as std;
 
 use crypto::hkdf::*;
 use rand::thread_rng;
 use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
 use crypto::sha2::Sha256;
-use sgx_tstd::vec::Vec;
 
 use crate::consts::EMPTY_BYTES;
 use crate::types::AesKey;
@@ -104,6 +101,8 @@ pub(crate) mod tests {
         let mut key = [0u8; 32];
         thread_rng().fill(&mut key);
 
+        println!("{:?}", key);
+
         assert_eq!(
             text,
             aes_decrypt(&key, aes_encrypt(&key, text).unwrap().as_slice())
@@ -156,11 +155,12 @@ pub(crate) mod tests {
     fn test_hkdf() {
         let text = b"secret";
 
-        let h = Hkdf::<Sha256>::new(None, text);
+        let digest = Sha256::new();
         let mut out = [0u8; 32];
-        let r = h.expand(&EMPTY_BYTES, &mut out);
+        let mut prk = [0u8; 32];
+        hkdf_extract(digest, &EMPTY_BYTES, text, &mut prk);
+        hkdf_expand(digest, &prk[..], &EMPTY_BYTES, &mut out);
 
-        assert!(r.is_ok());
         assert_eq!(
             out.to_vec(),
             decode_hex("2f34e5ff91ec85d53ca9b543683174d0cf550b60d5f52b24c97b386cfcf6cbbf")
