@@ -1,10 +1,10 @@
 #![no_std]
 use sgx_tstd as std;
 
-use hkdf::Hkdf;
+use crypto::hkdf::*;
 use rand::thread_rng;
 use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
-use sha2::Sha256;
+use crypto::sha2::Sha256;
 
 use sgx_tstd::vec::Vec;
 
@@ -45,10 +45,11 @@ pub fn decapsulate(pk: &PublicKey, peer_sk: &SecretKey) -> Result<AesKey, SecpEr
 
 // private below
 fn hkdf_sha256(master: &[u8]) -> Result<AesKey, SecpError> {
-    let h = Hkdf::<Sha256>::new(None, master);
+    let digest = Sha256::new();
     let mut out = [0u8; 32];
-    h.expand(&EMPTY_BYTES, &mut out)
-        .map_err(|_| SecpError::InvalidInputLength)?;
+    let mut prk = [0u8; 32];
+    hkdf_extract(digest, &EMPTY_BYTES, &master, &mut prk);
+    hkdf_expand(digest, &prk[..], &EMPTY_BYTES, &mut out);
     Ok(out)
 }
 
