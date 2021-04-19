@@ -56,6 +56,8 @@ use sgx_tstd as std;
 
 use sgx_tstd::vec::Vec;
 
+use sgx_tstd::println;
+
 pub use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
 
 /// Constant variables
