@@ -1,6 +1,8 @@
 #![no_std]
 use sgx_tstd as std;
 
+use sgx_tstd::println;
+
 use crypto::hkdf::*;
 use rand::thread_rng;
 use secp256k1::{util::FULL_PUBLIC_KEY_SIZE, Error as SecpError, PublicKey, SecretKey};
