@@ -49,7 +49,7 @@ pub fn decapsulate(pk: &PublicKey, peer_sk: &SecretKey) -> Result<AesKey, SecpEr
 
     println!("decap p3");
     
-    hkdf_sha256(master.as_slice())
+    hkdf_sha256(master.as_slice());
     
     println!("decap p4");
 }
