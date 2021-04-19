@@ -23,7 +23,7 @@ pub fn generate_keypair() -> (SecretKey, PublicKey) {
 pub fn encapsulate(sk: &SecretKey, peer_pk: &PublicKey) -> Result<AesKey, SecpError> {
     let mut shared_point = peer_pk.clone();
     shared_point.tweak_mul_assign(&sk)?;
-
+    
     let mut master = Vec::with_capacity(FULL_PUBLIC_KEY_SIZE * 2);
     master.extend(PublicKey::from_secret_key(&sk).serialize().iter());
     master.extend(shared_point.serialize().iter());
@@ -36,11 +36,20 @@ pub fn decapsulate(pk: &PublicKey, peer_sk: &SecretKey) -> Result<AesKey, SecpEr
     let mut shared_point = pk.clone();
     shared_point.tweak_mul_assign(&peer_sk)?;
 
+     println!("decap p1");
+    
     let mut master = Vec::with_capacity(FULL_PUBLIC_KEY_SIZE * 2);
     master.extend(pk.serialize().iter());
+    
+    println!("decrypt p2");
+    
     master.extend(shared_point.serialize().iter());
 
+    println!("decrypt p3");
+    
     hkdf_sha256(master.as_slice())
+    
+    println!("decrypt p4");
 }
 
 // private below
