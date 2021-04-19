@@ -63,6 +63,4 @@ pub fn aes_decrypt(key: &[u8], encrypted_msg: &[u8]) -> Option<Vec<u8>> {
     } else {
         None
     }
-    
-        println!("aesd p3");
 }
