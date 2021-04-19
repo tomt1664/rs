@@ -41,15 +41,15 @@ pub fn decapsulate(pk: &PublicKey, peer_sk: &SecretKey) -> Result<AesKey, SecpEr
     let mut master = Vec::with_capacity(FULL_PUBLIC_KEY_SIZE * 2);
     master.extend(pk.serialize().iter());
     
-    println!("decrypt p2");
+    println!("decap p2");
     
     master.extend(shared_point.serialize().iter());
 
-    println!("decrypt p3");
+    println!("decap p3");
     
     hkdf_sha256(master.as_slice())
     
-    println!("decrypt p4");
+    println!("decap p4");
 }
 
 // private below
