@@ -117,10 +117,7 @@ pub fn decrypt(receiver_sec: &[u8], msg: &[u8]) -> Result<Vec<u8>, SecpError> {
 
     println!("decrypt p3");
     
-    aes_decrypt(&aes_key, encrypted).ok_or(SecpError::InvalidMessage);
-
-    println!("decrypt p4");
-
+    aes_decrypt(&aes_key, encrypted).ok_or(SecpError::InvalidMessage)
 }
 
 #[cfg(test)]
