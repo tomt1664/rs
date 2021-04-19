@@ -96,18 +96,29 @@ pub fn encrypt(receiver_pub: &[u8], msg: &[u8]) -> Result<Vec<u8>, SecpError> {
 /// * `receiver_sec` - The u8 array reference of a receiver's secret key
 /// * `msg` - The u8 array reference of the encrypted message
 pub fn decrypt(receiver_sec: &[u8], msg: &[u8]) -> Result<Vec<u8>, SecpError> {
+
     let receiver_sk = SecretKey::parse_slice(receiver_sec)?;
 
+    println!("decrypt p1");
+    
     if msg.len() < FULL_PUBLIC_KEY_SIZE {
         return Err(SecpError::InvalidMessage);
     }
-
+    
     let ephemeral_pk = PublicKey::parse_slice(&msg[..FULL_PUBLIC_KEY_SIZE], None)?;
-    let encrypted = &msg[FULL_PUBLIC_KEY_SIZE..];
 
+        println!("decrypt p2");
+    
+    let encrypted = &msg[FULL_PUBLIC_KEY_SIZE..];
+    
     let aes_key = decapsulate(&ephemeral_pk, &receiver_sk)?;
 
+    println!("decrypt p3");
+    
     aes_decrypt(&aes_key, encrypted).ok_or(SecpError::InvalidMessage)
+
+    println!("decrypt p4");
+
 }
 
 #[cfg(test)]
