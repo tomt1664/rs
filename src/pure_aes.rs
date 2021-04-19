@@ -1,6 +1,8 @@
 #![no_std]
 use sgx_tstd as std;
 
+use sgx_tstd::println;
+
 use aes_gcm::aead::{generic_array::GenericArray, AeadInPlace, NewAead};
 use aes_gcm::{aes::Aes256, AesGcm};
 use rand::{thread_rng, Rng};
